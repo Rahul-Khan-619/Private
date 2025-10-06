@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Stream Page</title>
+    <style>
+        /* Basic reset for styling */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* Hide scrollbars */
+            background-color: #000; /* Black background for the page */
+        }
+
+        /* Styling for the container to hold the iframe */
+        .iframe-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw; /* 100% of the viewport width */
+            height: 100vh; /* 100% of the viewport height */
+        }
+
+        /* The iframe itself */
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none; /* Remove the default border */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="iframe-container">
+        <!-- 
+            This iframe now loads the content from your local proxy.php script.
+            The PHP script fetches the content from the remote site and serves it,
+            bypassing the browser's cross-origin restrictions.
+        -->
+        <iframe 
+            src="proxy.php" 
+            allow="encrypted-media; fullscreen"
+            allowfullscreen>
+        </iframe>
+    </div>
+
+</body>
+</html>
+
