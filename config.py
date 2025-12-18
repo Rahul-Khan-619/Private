@@ -21,5 +21,3 @@ SOURCE_GROUP_IDS = [3549831857,3344273206]
 # Optional: Pre-fill phone number to avoid typing it every time (Format: +1234567890)
 # If empty, you will be prompted in the terminal.
 PHONE_NUMBER = "" 
-
-

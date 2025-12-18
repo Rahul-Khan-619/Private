@@ -300,7 +300,7 @@ if __name__ == '__main__':
     )
     
     print("\n[SUCCESS] Logged in successfully!")
-    print(f"Monitoring Group ID: {config.SOURCE_GROUP_ID if config.SOURCE_GROUP_ID != 0 else 'ALL GROUPS'}")
+    print(f"Monitoring Group IDs: {config.SOURCE_GROUP_IDS if config.SOURCE_GROUP_IDS else 'ALL GROUPS'}")
     
     client.loop.create_task(process_queue())
     
