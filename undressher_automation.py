@@ -3,10 +3,9 @@ import random
 import logging
 import os
 import re
+import time
 from telethon import TelegramClient, events
 import config
-
-import time
 
 # Configure logging
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
@@ -15,9 +14,6 @@ logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s'
 # Initialize the client
 client = TelegramClient(config.SESSION_NAME, config.API_ID, config.API_HASH)
 
-# Configuration for this specific script
-VIDEO_BOT_USERNAME = "@Mr_Super_Editor_1roBot"
-
 # Queue for processing photos
 photo_queue = None
 MAX_QUEUE_SIZE = 2
@@ -25,6 +21,14 @@ MAX_QUEUE_SIZE = 2
 # Rate Limiting
 user_last_seen = {}
 RATE_LIMIT_SECONDS = 3600 # 1 Hour
+
+# Load Promo Links
+PROMO_LINKS = []
+try:
+    with open("promo_links.txt", "r") as f:
+        PROMO_LINKS = [line.strip() for line in f if line.strip()]
+except FileNotFoundError:
+    print("Warning: promo_links.txt not found. Promo links will be empty.")
 
 async def process_queue():
     """Worker function to process photos from the queue sequentially."""
@@ -40,41 +44,40 @@ async def process_queue():
         try:
             print(f"Processing photo from chat {source_chat_id}...")
             
-            # --- STEP 1: Process with Video Bot ---
-            final_video_msg = None
+            # --- STEP 1: Process with UndressHerBot ---
+            final_photo_msg = None
             
-            async with client.conversation(VIDEO_BOT_USERNAME, timeout=1200) as conv: # 20 mins timeout
+            async with client.conversation(config.UNDRESSHER_BOT_USERNAME, timeout=1000) as conv:
                 
                 # 1. Download and Send Photo
                 print("Downloading photo...")
                 photo_path = await client.download_media(message, file="temp_input.jpg")
                 
-                print(f"Sending photo to {VIDEO_BOT_USERNAME}...")
+                print(f"Sending photo to {config.UNDRESSHER_BOT_USERNAME}...")
                 await conv.send_file(photo_path)
                 
                 if os.path.exists(photo_path):
                     os.remove(photo_path)
 
-                # 2. Wait for Effect Menu ("Please select the effect")
-                print("Waiting for Effect Menu...")
-                effect_msg = None
+                # 2. Wait for Menu with Buttons
+                print("Waiting for Menu...")
+                menu_msg = None
                 while True:
                     response = await conv.get_response()
-                    if "Please select the effect" in response.text and response.buttons:
-                        effect_msg = response
+                    if response.buttons:
+                        menu_msg = response
                         break
                     else:
-                        print(f"Ignored message: {response.text[:20]}... (Waiting for Effect Menu)")
+                        print(f"Ignored message: {response.text[:20]}... (Waiting for Menu)")
                 
-                # Select Random Effect
-                # Filter out "Preview" button
-                print("Received Effect Menu. Selecting random effect...")
+                # Select Random Button (Exclude "VIP")
+                print("Received Menu. Selecting random button (excluding VIP)...")
                 valid_buttons = []
                 
-                if effect_msg.buttons:
-                    for row in effect_msg.buttons:
+                if menu_msg.buttons:
+                    for row in menu_msg.buttons:
                         for btn in row:
-                            if "Preview" not in btn.text:
+                            if "VIP" not in btn.text:
                                 valid_buttons.append(btn)
                 
                 if valid_buttons:
@@ -86,71 +89,31 @@ async def process_queue():
                     print("No valid buttons found!")
                     continue
 
-                # Check for "No Face" Error immediately after selection
-                print("Checking for response (Confirm or Error)...")
-                confirm_msg = None
-                is_error = False
-                
+                # 3. Wait for "Request accepted"
+                print("Waiting for 'Request accepted'...")
                 while True:
                     response = await conv.get_response()
-                    
-                    # Error Check
-                    if "You haven't sent face photo" in response.text or "face photo has expired" in response.text:
-                        print("Error: No face detected.")
-                        is_error = True
-                        # Click Cancel if available
-                        if response.buttons:
-                            for row in response.buttons:
-                                for btn in row:
-                                    if "Cancel" in btn.text:
-                                        await btn.click()
-                                        break
+                    if "Request accepted" in response.text:
                         break
-
-                    has_confirm = False
-                    if response.buttons:
-                        for row in response.buttons:
-                            for btn in row:
-                                if "Confirm" in btn.text:
-                                    has_confirm = True
-                                    break
-                    
-                    if has_confirm:
-                        confirm_msg = response
-                        break
+                    elif "You haven't sent face photo" in response.text: # Handle potential error
+                         print("Error: No face detected.")
+                         await client.send_message(source_chat_id, "Error: Please send a proper full-face close-up photo.", reply_to=message.id)
+                         raise Exception("No face detected")
                     else:
-                        print(f"Ignored message: {response.text[:20]}... (Waiting for Confirm)")
+                         print(f"Ignored message: {response.text[:20]}...")
 
-                if is_error:
-                    print("Aborting process due to No Face error.")
-                    await client.send_message(source_chat_id, "Error: Please send a proper full-face close-up photo.", reply_to=message.id)
-                    continue # Skip to next item in queue
-
-                # Click Confirm
-                print("Received Confirm Menu. Clicking Confirm...")
-                confirm_btn = None
-                for row in confirm_msg.buttons:
-                    for btn in row:
-                        if "Confirm" in btn.text:
-                            confirm_btn = btn
-                            break
-                
-                if confirm_btn:
-                    await asyncio.sleep(random.uniform(2, 4))
-                    await confirm_btn.click()
-
-                # 4. Wait for Final Result (Video)
-                print("Waiting for Final Result (Video)... This may take 10-15 mins.")
+                # 4. Wait for Final Result (Photo)
+                print("Waiting for Final Result (Photo)... This may take up to 10 mins.")
                 while True:
                     response = await conv.get_response()
-                    # Check for video or document (sometimes videos are sent as documents)
-                    if response.video or (response.document and response.document.mime_type.startswith('video/')):
-                        final_video_msg = response
+                    if response.photo:
+                        final_photo_msg = response
                         break
-                    elif "Task submitted successfully" in response.text:
-                        print("Task submitted. Waiting...")
+                    elif "done" in response.text.lower():
+                        # Sometimes "done" comes after or before, just ignore text messages unless they are errors
+                        pass
                     else:
-                        print(f"Ignored message: {response.text[:20]}... (Waiting for Video)")
+                        print(f"Ignored message: {response.text[:20]}... (Waiting for Photo)")
 
                 print("Received Final Result.")
 
@@ -159,17 +122,12 @@ async def process_queue():
             generated_link = None
             
             async with client.conversation(config.FILE_STORE_BOT_USERNAME, timeout=120) as conv_store:
-                # Forward the processed video directly
-                print("Forwarding processed video to File Store Bot...")
-                # We use client.forward_messages but we need to capture the result to reply to it.
-                # Also, we are inside a conversation context. 
-                # To ensure conv_store tracks it, we can use conv_store.send_message with file=final_video_msg (which acts as forward/upload)
-                # OR we just forward and then send the command via conv_store.
+                # Forward the processed photo directly
+                print("Forwarding processed photo to File Store Bot...")
                 
-                forwarded_msg = await client.forward_messages(config.FILE_STORE_BOT_USERNAME, final_video_msg)
+                forwarded_msg = await client.forward_messages(config.FILE_STORE_BOT_USERNAME, final_photo_msg)
                 
                 print("Sending /genlink command...")
-                # WE MUST USE conv_store.send_message HERE to avoid "No message was sent previously" error
                 await conv_store.send_message('/genlink', reply_to=forwarded_msg.id)
                 
                 # Wait for response "Here is your link:"
@@ -183,7 +141,6 @@ async def process_queue():
                     # Wait for edit
                     print("Waiting for edit...")
                     try:
-                        # We use conv_store.wait_event to ensure we catch the edit in this chat
                         event = await conv_store.wait_event(events.MessageEdited(chats=config.FILE_STORE_BOT_USERNAME), timeout=60)
                         if "Here is your link" in event.message.text:
                             generated_link = event.message.text
@@ -201,10 +158,10 @@ async def process_queue():
                 print(f"Link generated: {final_url}")
                 print("Sending reply to source group...")
                 
-                sender = await message.get_sender()
-                mention = f"@{sender.username}" if sender.username else sender.first_name
+                # Pick random promo link
+                promo_link = random.choice(PROMO_LINKS) if PROMO_LINKS else "https://t.me/Mr_Super_Edits_robot"
                 
-                caption = f"Here is your Super Edit (Video) - see by opening this link - {final_url}\n{mention}"
+                caption = f"Your Edited Photo Result is here 👉 {final_url}\n👇👇👇👇\n{promo_link} \n 👆👆 Do You want to Do a Video Edit Like This ?\nMsg to @Mr_Super_Editor"
                 
                 await client.send_message(source_chat_id, caption, reply_to=message.id)
                 print("Process Complete!")
@@ -247,13 +204,13 @@ async def handler(event):
     # Listen for Photos in Groups
     if event.is_group and event.photo:
         # Filter by Group IDs
-        if config.VIDEO_BOT_GROUPS and chat.id not in config.VIDEO_BOT_GROUPS:
+        if config.UNDRESSHER_BOT_GROUPS and chat.id not in config.UNDRESSHER_BOT_GROUPS:
             return
 
         print(f"\n[+] Photo received in group: {chat.title} (ID: {chat.id}) from User {user_id}")
         
-        if not config.VIDEO_BOT_GROUPS:
-            print(f"NOTE: To restrict to this group, add {chat.id} to VIDEO_BOT_GROUPS in config.py")
+        if not config.UNDRESSHER_BOT_GROUPS:
+            print(f"NOTE: To restrict to this group, add {chat.id} to UNDRESSHER_BOT_GROUPS in config.py")
 
         # 1. Rate Limit Check
         current_time = time.time()
@@ -265,7 +222,7 @@ async def handler(event):
 
         # 2. Spam Check (Delay & Existence)
         print("Waiting 5s to check for spam deletion...")
-        await asyncio.sleep(6)
+        await asyncio.sleep(5)
         
         try:
             # Check if message still exists
@@ -289,7 +246,7 @@ async def handler(event):
 
 if __name__ == '__main__':
     print("--------------------------------------------------")
-    print("Starting Video Automation Bot...")
+    print("Starting UndressHer Automation Bot...")
     print("Please follow the prompts to log in.")
     print("--------------------------------------------------")
     
@@ -300,7 +257,7 @@ if __name__ == '__main__':
     )
     
     print("\n[SUCCESS] Logged in successfully!")
-    print(f"Monitoring Group IDs: {config.SOURCE_GROUP_IDS if config.SOURCE_GROUP_IDS else 'ALL GROUPS'}")
+    print(f"Monitoring Group ID: {config.UNDRESSHER_BOT_GROUPS if config.UNDRESSHER_BOT_GROUPS else 'ALL GROUPS'}")
     
     client.loop.create_task(process_queue())
     

@@ -189,7 +189,9 @@ async def process_queue():
                 sender = await message.get_sender()
                 mention = f"@{sender.username}" if sender.username else sender.first_name
                 
-                caption = f"Here is your Super Edit - see by opening this link - {final_url}\n{mention}"
+                promo_link = random.choice(PROMO_LINKS) if PROMO_LINKS else "https://t.me/Mr_Super_Edits_robot"
+                
+                caption = f"Your Edited Photo Result is here 👉 {final_url}\n👇👇👇👇\n{promo_link} \n 👆👆 Do You want to Do a Video Edit Like This ?\nMsg to @Mr_Super_Editor"
                 
                 await client.send_message(source_chat_id, caption, reply_to=message.id)
                 print("Process Complete!")
@@ -241,13 +243,13 @@ async def handler(event):
     # Listen for Photos in Groups
     if event.is_group and event.photo:
         # Filter by Group IDs
-        if config.SOURCE_GROUP_IDS and chat.id not in config.SOURCE_GROUP_IDS:
+        if config.MAIN_BOT_GROUPS and chat.id not in config.MAIN_BOT_GROUPS:
             return
 
         print(f"\n[+] Photo received in group: {chat.title} (ID: {chat.id}) from User {user_id}")
         
-        if not config.SOURCE_GROUP_IDS:
-            print(f"NOTE: To restrict to this group, add {chat.id} to SOURCE_GROUP_IDS in config.py")
+        if not config.MAIN_BOT_GROUPS:
+            print(f"NOTE: To restrict to this group, add {chat.id} to MAIN_BOT_GROUPS in config.py")
 
         # 1. Rate Limit Check
         current_time = time.time()

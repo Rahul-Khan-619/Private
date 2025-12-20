@@ -4,8 +4,10 @@ import os
 API_ID = 31349440
 API_HASH = "93811745aee1c809da395285b24ddc73"
 
-# The bot to interact with (Processing Bot)
-TARGET_BOT_USERNAME = "@FreeUndreBot"
+# Target Bots
+TARGET_BOT_USERNAME = "@FreeUndreBot" # For main.py
+VIDEO_BOT_USERNAME = "@Mr_Super_Editor_1roBot" # For video_automation.py
+UNDRESSHER_BOT_USERNAME = "@UndressHer20Bot" # For undressher_automation.py
 
 # The bot to generate links (File Store Bot)
 FILE_STORE_BOT_USERNAME = "@Mr_Super_Edits_robot"
@@ -13,12 +15,18 @@ FILE_STORE_BOT_USERNAME = "@Mr_Super_Edits_robot"
 # Session name
 SESSION_NAME = "userbot_session"
 
-# Configuration
-# The Group IDs to monitor. 
-# Add IDs to the list. Set to empty list [] to monitor ALL groups (and see their IDs printed).
-SOURCE_GROUP_IDS = [3344273206]
+# Configuration - Group IDs
+# Set to empty list [] to monitor ALL groups.
+
+# Groups for main.py (@FreeUndreBot)
+MAIN_BOT_GROUPS = [3344273206]
+
+# Groups for video_automation.py (@Mr_Super_Editor_1roBot)
+VIDEO_BOT_GROUPS = [3344273206]
+
+# Groups for undressher_automation.py (@UndressHer20Bot)
+UNDRESSHER_BOT_GROUPS = [3344273206,3549831857]
 
 # Optional: Pre-fill phone number to avoid typing it every time (Format: +1234567890)
 # If empty, you will be prompted in the terminal.
 PHONE_NUMBER = "" 
-
