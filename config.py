@@ -13,7 +13,7 @@ UNDRESSHER_BOT_USERNAME = "@UndressHer20Bot" # For undressher_automation.py
 FILE_STORE_BOT_USERNAME = "@Mr_Super_Edits_robot"
 
 # API Bot Settings (@Super_edit_roBot)
-API_BOT_TOKEN = "8439214282:AAFrI1QfJdwahZVvcV3PZvIZX9DYXvslnzE"
+API_BOT_TOKEN = "8534571465:AAEwPds0DNd8BoBGb9Jq61GyVWkDKT01KEI"
 UNCLOTHY_API_KEY = "87e51a079a1e497187329a1f3916ce80"
 UNCLOTHY_API_URL = "https://unclothy.com/api"
 
@@ -38,3 +38,4 @@ API_BOT_GROUPS = [3344273206,3549831857]
 # Optional: Pre-fill phone number to avoid typing it every time (Format: +1234567890)
 # If empty, you will be prompted in the terminal.
 PHONE_NUMBER = "" 
+
