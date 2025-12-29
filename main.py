@@ -21,7 +21,15 @@ MAX_QUEUE_SIZE = 2
 
 # Rate Limiting
 user_last_seen = {}
-RATE_LIMIT_SECONDS = 3600 # 1 Hour
+RATE_LIMIT_SECONDS = 7200 # 2 Hours
+
+# Load Promo Links
+PROMO_LINKS = []
+try:
+    with open("promo_links.txt", "r") as f:
+        PROMO_LINKS = [line.strip() for line in f if line.strip()]
+except FileNotFoundError:
+    print("Warning: promo_links.txt not found. Promo links will be empty.")
 
 async def process_queue():
     """Worker function to process photos from the queue sequentially."""
@@ -296,7 +304,7 @@ if __name__ == '__main__':
     )
     
     print("\n[SUCCESS] Logged in successfully!")
-    print(f"Monitoring Group ID: {config.SOURCE_GROUP_IDS if config.SOURCE_GROUP_IDS != 0 else 'ALL GROUPS'}")
+    print(f"Monitoring Group ID: {config.MAIN_BOT_GROUPS if config.MAIN_BOT_GROUPS else 'ALL GROUPS'}")
     
     client.loop.create_task(process_queue())
     
