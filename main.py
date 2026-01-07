@@ -179,7 +179,8 @@ async def process_photo_with_bot(bot_username, source_chat_id, message):
                         print(f"[{bot_username}] Link: {final_url}")
                         
                         promo_link = random.choice(PROMO_LINKS) if PROMO_LINKS else "https://t.me/Mr_Super_Edits_robot"
-                        caption = f"Your Edited Photo Result is here 👉 {final_url}\n👇👇👇👇\n{promo_link} \n 👆👆 Do You want to Do a Video Edit Like This ?\nMsg to @Mr_Super_Editor"
+                        # caption = f"Your Edited Photo Result is here 👉 {final_url}\n👇👇👇👇\n{promo_link} \n 👆👆 Do You want to Do a Video Edit Like This ?\nMsg to @Mr_Super_Editor"
+                        caption = f"Your Edited Photo Result is here 👉 {final_url} \n Dm to @Mr_Super_Human And Get Photo to Video Edit Bot at less Price \n msg to @Mr_Super_Human Now "
                         
                         await client.send_message(source_chat_id, caption, reply_to=message.id)
                         print(f"[{bot_username}] Done!")
