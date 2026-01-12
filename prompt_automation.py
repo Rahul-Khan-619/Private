@@ -59,7 +59,7 @@ PROMPTS = {
     },
     "6": {
         "title": "BDSM Harness",
-        "prompt": "black leather BDSM harness with hot breast cleavage visible"
+        "prompt": "black leather BDSM harness"
     },
     "7": {
         "title": "Fishnet Body",
@@ -369,5 +369,6 @@ async def main():
 
 if __name__ == '__main__':
     loop.run_until_complete(main())
+
 
 
