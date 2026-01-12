@@ -25,7 +25,7 @@ user = TelegramClient(config.SESSION_NAME, config.API_ID, config.API_HASH, loop=
 
 # Rate Limiting
 user_last_edit = {}
-RATE_LIMIT_SECONDS = 7200 # 2 Hours
+RATE_LIMIT_SECONDS = 700 # 2 Hours
 
 # Load Promo Links
 PROMO_LINKS = []
@@ -369,3 +369,4 @@ async def main():
 
 if __name__ == '__main__':
     loop.run_until_complete(main())
+
