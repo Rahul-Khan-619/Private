@@ -22,11 +22,6 @@ bot = TelegramClient('bot_session_prompt', config.API_ID, config.API_HASH, loop=
 # User Client (Interacts with Master/Result Bots)
 user = TelegramClient(config.SESSION_NAME, config.API_ID, config.API_HASH, loop=loop)
 
-# Album Check
-if event.grouped_id:
-    await event.reply("⚠️ Please send only one photo at a time.")
-    return
-
 # Rate Limiting
 user_last_edit = {}
 RATE_LIMIT_SECONDS = 7200 # 2 Hours
@@ -364,3 +359,4 @@ async def main():
 
 if __name__ == '__main__':
     loop.run_until_complete(main())
+
