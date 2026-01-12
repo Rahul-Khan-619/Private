@@ -17,7 +17,8 @@ loop = asyncio.new_event_loop()
 asyncio.set_event_loop(loop)
 
 # Bot Client (Interacts with Group Users - UI)
-bot = TelegramClient('bot_session_prompt', config.API_ID, config.API_HASH, loop=loop)
+# Using a new session name to ensure it uses the new Token
+bot = TelegramClient('bot_session_prompt_new', config.API_ID, config.API_HASH, loop=loop)
 
 # User Client (Interacts with Master/Result Bots)
 user = TelegramClient(config.SESSION_NAME, config.API_ID, config.API_HASH, loop=loop)
@@ -38,63 +39,67 @@ except FileNotFoundError:
 PROMPTS = {
     "1": {
         "title": "Micro Bikini",
-        "prompt": "Woman in tiny string micro bikini, thin straps barely covering nipples and pussy lips, side ties digging into hips"
+        "prompt": "tiny string micro bikini with hot breast cleavage cisible"
     },
     "2": {
         "title": "Shibari Bondage",
-        "prompt": "Woman wearing intricate red shibari rope bondage, ropes tightly wrapped around bare breasts, waist and thighs, nipples and pussy exposed between ropes"
+        "prompt": "red shibari rope bondage around naked breasts and around legs"
     },
     "3": {
         "title": "Sheer Lingerie",
-        "prompt": "Woman in ultra-sheer transparent lingerie set, completely see-through black lace bra and thong, hard nipples and shaved pussy fully visible"
+        "prompt": "sheer transparent black lingerie with hot breast cleavage visible"
     },
     "4": {
         "title": "X-Ray Dress",
-        "prompt": "Woman in extremely transparent x-ray style dress, almost invisible sheer white fabric, entire naked body clearly visible underneath, breasts and pussy perfectly outlined"
+        "prompt": "extremely transparent x-ray style dress, almost invisible sheer white fabric, entire naked body clearly visible underneath, breasts and pussy perfectly outlined"
     },
     "5": {
         "title": "Neon Pink Bikini",
-        "prompt": "Woman in tiny neon pink bikini, micro triangles only covering nipples, thin bottom barely covering pussy, lots of bare skin"
+        "prompt": "tiny neon pink bikini with hot breast cleavage visible"
     },
     "6": {
         "title": "BDSM Harness",
-        "prompt": "Woman in black leather BDSM harness, thin straps crossing bare breasts and around hips, pussy and nipples completely exposed"
+        "prompt": "black leather BDSM harness with hot breast cleavage visible"
     },
     "7": {
         "title": "Fishnet Body",
-        "prompt": "Woman wearing full-body fishnet bodystocking with large open crotch and chest holes, nipples and shaved pussy fully bare"
+        "prompt": "full body fishnet bodystocking"
     },
     "8": {
         "title": "Wet Micro Dress",
-        "prompt": "Woman in wet see-through white micro dress, fabric completely transparent when wet, hard nipples and pussy clearly visible"
+        "prompt": "wet see-through white dress with partially visible breasts and pussy"
     },
     "9": {
         "title": "Sexy Nurse",
-        "prompt": "Woman in sexy nurse micro dress, ultra-short white fabric, deep cleavage, no bra, thong pulled aside exposing pussy"
+        "prompt": "sexy nurse micro dress"
     },
     "10": {
         "title": "Latex Catsuit",
-        "prompt": "Woman in glossy black latex catsuit with open crotch zipper, pussy and breasts fully exposed through open zipper"
+        "prompt": "glossy black latex catsuit"
     },
     "11": {
         "title": "Gold Thong",
-        "prompt": "Woman wearing only tiny metallic gold thong bikini bottom, completely topless, bare breasts, thin string barely covering pussy"
+        "prompt": "tiny metallic gold thong"
     },
     "12": {
         "title": "Pink Babydoll",
-        "prompt": "Woman in sheer babydoll chemise, extremely transparent pink mesh, nipples and entire pussy visible through fabric"
+        "prompt": "sheer pink babydoll chemise"
     },
     "13": {
         "title": "Strappy Bondage",
-        "prompt": "Woman in strappy black bondage lingerie, thin leather straps and chains, breasts and pussy completely bare between straps"
+        "prompt": "strappy black bondage lingerie"
     },
     "14": {
         "title": "Red Satin Thong",
-        "prompt": "Woman wearing red satin micro thong and pasties, tiny heart-shaped nipple covers, pussy barely hidden by thin fabric"
+        "prompt": "red satin micro thong"
     },
     "15": {
         "title": "Wedding Lingerie",
-        "prompt": "Woman in completely sheer white wedding lingerie, transparent veil and garter set, full naked body visible underneath"
+        "prompt": "sheer white wedding lingerie"
+    },
+    "16": {
+        "title": "Naked",
+        "prompt": "naked with bare Breasts and Pussy"
     }
 }
 
@@ -246,7 +251,12 @@ async def bot_handler(event):
         return
 
     chat = await event.get_chat()
+    
+    # Debug: Print every group photo received to help user find the correct ID
+    print(f"DEBUG: Received photo in Group: {chat.title} | ID: {chat.id}")
+
     if config.PROMPT_BOT_GROUPS and chat.id not in config.PROMPT_BOT_GROUPS:
+        print(f"DEBUG: Ignoring (ID {chat.id} not in configured {config.PROMPT_BOT_GROUPS})")
         return
         
     sender = await event.get_sender()
@@ -359,4 +369,3 @@ async def main():
 
 if __name__ == '__main__':
     loop.run_until_complete(main())
-

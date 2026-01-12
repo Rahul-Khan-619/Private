@@ -15,10 +15,10 @@ MASTER_BOT_USERNAME = "@fungenzbot" # Sends prompt to this bot
 RESULT_BOT_USERNAME = "@Super_Pwr_bot" # Receives result from this bot
 
 # The bot to generate links (File Store Bot)
-FILE_STORE_BOT_USERNAME = "@Mr_Super_Edits_robot"
+FILE_STORE_BOT_USERNAME = "@Mr_Super_Human_SafeBot"
 
 # API Bot Settings (@Super_edit_roBot)
-API_BOT_TOKEN = "8439214282:AAFrI1QfJdwahZVvcV3PZvIZX9DYXvslnzE"
+API_BOT_TOKEN = "8539080277:AAGcJK1H0FAjxEG2ptmEa8PCvlF2FjBf75k"
 UNCLOTHY_API_KEY = "87e51a079a1e497187329a1f3916ce80"
 UNCLOTHY_API_URL = "https://unclothy.com/api"
 
@@ -38,7 +38,7 @@ VIDEO_BOT_GROUPS = [3344273206]
 UNDRESSHER_BOT_GROUPS = [3344273206]
 
 # Groups for api_bot.py (@Super_edit_roBot)
-API_BOT_GROUPS = [3344273206, 3549831857]
+API_BOT_GROUPS = [3615852792, 3549831857]
 
 # Groups for prompt_automation.py
 PROMPT_BOT_GROUPS = [3615852792]
@@ -46,4 +46,3 @@ PROMPT_BOT_GROUPS = [3615852792]
 # Optional: Pre-fill phone number to avoid typing it every time (Format: +1234567890)
 # If empty, you will be prompted in the terminal.
 PHONE_NUMBER = "" 
-
