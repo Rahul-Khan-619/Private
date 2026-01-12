@@ -29,7 +29,7 @@ SESSION_NAME = "userbot_session"
 # Set to empty list [] to monitor ALL groups.
 
 # Groups for main.py (@FreeUndreBot & @AdvancedDreamCloBot)
-MAIN_BOT_GROUPS = [3344273206]
+MAIN_BOT_GROUPS = [3615852792]
 
 # Groups for video_automation.py (@Mr_Super_Editor_1roBot)
 VIDEO_BOT_GROUPS = [3344273206]
@@ -41,8 +41,9 @@ UNDRESSHER_BOT_GROUPS = [3344273206]
 API_BOT_GROUPS = [3344273206, 3549831857]
 
 # Groups for prompt_automation.py
-PROMPT_BOT_GROUPS = [3344273206]
+PROMPT_BOT_GROUPS = [3615852792]
 
 # Optional: Pre-fill phone number to avoid typing it every time (Format: +1234567890)
 # If empty, you will be prompted in the terminal.
 PHONE_NUMBER = "" 
+
