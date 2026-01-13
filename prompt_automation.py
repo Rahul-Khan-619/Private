@@ -39,7 +39,7 @@ except FileNotFoundError:
 PROMPTS = {
     "1": {
         "title": "Micro Bikini",
-        "prompt": "tiny string micro bikini with hot breast cleavage cisible"
+        "prompt": "tiny string micro bikini with hot breast cleavage visible"
     },
     "2": {
         "title": "Shibari Bondage",
@@ -59,7 +59,7 @@ PROMPTS = {
     },
     "6": {
         "title": "BDSM Harness",
-        "prompt": "black leather BDSM harness"
+        "prompt": "black leather BDSM harness without dress, naked"
     },
     "7": {
         "title": "Fishnet Body",
@@ -71,7 +71,7 @@ PROMPTS = {
     },
     "9": {
         "title": "Sexy Nurse",
-        "prompt": "sexy nurse micro dress"
+        "prompt": "sexy nurse fit micro dress"
     },
     "10": {
         "title": "Latex Catsuit",
@@ -79,7 +79,7 @@ PROMPTS = {
     },
     "11": {
         "title": "Gold Thong",
-        "prompt": "tiny metallic gold thong"
+        "prompt": "tiny metallic gold thong around naked body"
     },
     "12": {
         "title": "Pink Babydoll",
@@ -369,6 +369,7 @@ async def main():
 
 if __name__ == '__main__':
     loop.run_until_complete(main())
+
 
 
 
