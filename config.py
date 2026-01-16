@@ -15,7 +15,7 @@ MASTER_BOT_USERNAME = "@fungenzbot" # Sends prompt to this bot
 RESULT_BOT_USERNAME = "@Super_Pwr_bot" # Receives result from this bot
 
 # The bot to generate links (File Store Bot)
-FILE_STORE_BOT_USERNAME = "@Mr_Super_Human_SafeBot"
+FILE_STORE_BOT_USERNAME = "@Mr_Super_Man_FilesBot"
 
 # API Bot Settings (@Super_edit_roBot)
 API_BOT_TOKEN = "8539080277:AAGcJK1H0FAjxEG2ptmEa8PCvlF2FjBf75k"
@@ -46,4 +46,5 @@ PROMPT_BOT_GROUPS = [3615852792,3658940062]
 # Optional: Pre-fill phone number to avoid typing it every time (Format: +1234567890)
 # If empty, you will be prompted in the terminal.
 PHONE_NUMBER = "" 
+
 
