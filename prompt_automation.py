@@ -39,15 +39,15 @@ except FileNotFoundError:
 PROMPTS = {
     "1": {
         "title": "Micro Bikini",
-        "prompt": "tiny string micro bikini with hot breast cleavage visible"
+        "prompt": "Turn all thier dresses to tiny string micro bikini with hot breast cleavage visible"
     },
     "2": {
         "title": "Shibari Bondage",
-        "prompt": "red shibari rope bondage around naked body"
+        "prompt": "Turn all thier dresses to red shibari rope bondage around naked body"
     },
     "3": {
         "title": "Sheer Lingerie",
-        "prompt": "sheer transparent black lingerie with hot breast cleavage visible"
+        "prompt": "Turn all thier dresses to sheer transparent black lingerie with hot breast cleavage visible"
     },
     "4": {
         "title": "X-Ray Dress",
@@ -55,7 +55,7 @@ PROMPTS = {
     },
     "5": {
         "title": "Neon Pink Bikini",
-        "prompt": "tiny neon pink bikini with hot breast,nipple cleavage visible"
+        "prompt": "Turn all thier dresses to tiny neon pink bikini with hot breast,nipple cleavage visible"
     },
     "6": {
         "title": "BDSM Harness",
@@ -67,15 +67,15 @@ PROMPTS = {
     },
     "8": {
         "title": "Wet Micro Dress",
-        "prompt": "wet see-through white dress with partially visible breasts and pussy"
+        "prompt": "Turn all thier dresses to wet see-through white dress with partially visible breasts and pussy"
     },
     "9": {
         "title": "Sexy Nurse",
-        "prompt": "sexy nurse fit micro dress"
+        "prompt": "Turn all thier dresses to sexy nurse fit micro dress"
     },
     "10": {
         "title": "Latex Catsuit",
-        "prompt": "glossy black latex catsuit"
+        "prompt": "Turn all thier dresses to glossy black latex catsuit"
     },
     "11": {
         "title": "Gold Thong",
@@ -83,11 +83,10 @@ PROMPTS = {
     },
     "12": {
         "title": "Pink Babydoll",
-        "prompt": "sheer pink babydoll chemise"
+        "prompt": "Turn all thier dresses to sheer pink babydoll chemise"
     },
     "13": {
         "title": "Strappy Bondage",
-        "prompt": "strappy black bondage lingerie"
     },
     "14": {
         "title": "Red Satin Thong",
@@ -95,11 +94,11 @@ PROMPTS = {
     },
     "15": {
         "title": "Wedding Lingerie",
-        "prompt": "sheer white wedding lingerie"
+        "prompt": "Turn all thier dresses to sheer white wedding lingerie"
     },
     "16": {
         "title": "Naked",
-        "prompt": "naked body, realistic, NSFW"
+        "prompt": "Make them naked body, realistic, NSFW"
     }
 }
 
@@ -369,6 +368,7 @@ async def main():
 
 if __name__ == '__main__':
     loop.run_until_complete(main())
+
 
 
 
