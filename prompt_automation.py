@@ -1,4 +1,4 @@
-buttonssADLRkAAicXOEdDnkbZGkNyjRYE asyncio
+import asyncio
 import logging
 import os
 import re
@@ -43,7 +43,7 @@ PROMPTS = {
     },
     "2": {
         "title": "Shibari Bondage",
-        "prompt": "red shibari rope bondage around naked breasts and around legs"
+        "prompt": "red shibari rope bondage around naked body"
     },
     "3": {
         "title": "Sheer Lingerie",
@@ -51,11 +51,11 @@ PROMPTS = {
     },
     "4": {
         "title": "X-Ray Dress",
-        "prompt": "extremely transparent x-ray style dress, almost invisible sheer white fabric, entire naked body clearly visible underneath, breasts and pussy perfectly outlined"
+        "prompt": "extremely transparent style dress, almost invisible sheer white fabric, entire naked body clearly visible underneath, breasts and pussy perfectly outlined"
     },
     "5": {
         "title": "Neon Pink Bikini",
-        "prompt": "tiny neon pink bikini with hot breast cleavage visible"
+        "prompt": "tiny neon pink bikini with hot breast,nipple cleavage visible"
     },
     "6": {
         "title": "BDSM Harness",
@@ -99,7 +99,7 @@ PROMPTS = {
     },
     "16": {
         "title": "Naked",
-        "prompt": "naked with bare Breasts and Pussy"
+        "prompt": "naked body, realistic, NSFW"
     }
 }
 
@@ -369,6 +369,7 @@ async def main():
 
 if __name__ == '__main__':
     loop.run_until_complete(main())
+
 
 
 
