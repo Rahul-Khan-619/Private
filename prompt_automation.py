@@ -1,4 +1,4 @@
-import asyncio
+buttonssADLRkAAicXOEdDnkbZGkNyjRYE asyncio
 import logging
 import os
 import re
@@ -139,7 +139,7 @@ def get_menu_keyboard(page=0):
     buttons.append([Button.inline("❌ Cancel", data="cancel_process")])
     
     # Fixed Link Button
-    buttons.append([Button.url("👉 Photo to Video H0t Edit ? 🔥", "https://t.me/Mr_Super_Human_SafeBot?start=BQADAQADLRkAAicXOEdDnkbZGkNyjRYE")])
+    buttons.append([Button.url("👉 Photo to Video H0t Edit ? 🔥", "https://t.me/Mr_Super_Man_FilesBot?start=BQADAQADEwgAAqELUUfleEPZZcx5-RYE")])
     
     return buttons
 
@@ -327,7 +327,7 @@ async def callback_handler(event):
         if final_link:
             promo_link = random.choice(PROMO_LINKS) if PROMO_LINKS else "https://t.me/Mr_Super_Edits_robot"
             # caption = f"Your Edited Photo Result is here 👉 {final_link}\n👇👇👇👇\n{promo_link} \n 👆👆 Do You want to Do a Video Edit Like This ?\nMsg to @Mr_Super_Editor"
-            caption = f"Your Edited Photo Result is here 👉 {final_link} \n\n Dm to @Mr_Super_Man And Get Photo to Video Edit Bot at less Price \n Demo Edits to 👉 https://t.me/Mr_Super_Human_SafeBot?start=BQADAQADLRkAAicXOEdDnkbZGkNyjRYE  DON'T MISS "
+            caption = f"Your Edited Photo Result is here 👉 {final_link} \n\n Dm to @Mr_Super_Man And Get Photo to Video Edit Bot at less Price \n Demo Edits to 👉 https://t.me/Mr_Super_Man_FilesBot?start=BQADAQADEwgAAqELUUfleEPZZcx5-RYE  DON'T MISS "
                         
 
             await event.edit(caption)
@@ -369,6 +369,7 @@ async def main():
 
 if __name__ == '__main__':
     loop.run_until_complete(main())
+
 
 
 
