@@ -16,7 +16,7 @@ logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s'
 client = TelegramClient(config.SESSION_NAME, config.API_ID, config.API_HASH)
 
 # Configuration for this specific script
-VIDEO_BOT_USERNAME = "@Mr_Super_Editor_1roBot"
+VIDEO_BOT_USERNAME = "@Xyz_vid_bot"
 
 # Queue for processing photos
 photo_queue = None
@@ -204,8 +204,9 @@ async def process_queue():
                 sender = await message.get_sender()
                 mention = f"@{sender.username}" if sender.username else sender.first_name
                 
-                caption = f"Here is your Super Edit (Video) - see by opening this link - {final_url}\n{mention}"
-                
+                # caption = f"Here is your Super Edit (Video) - see by opening this link - {final_url}\n{mention}"
+                caption = f"Your Edited Video Result is here 👉 {final_url} \n\n Dm to @Mr_Super_Man And Get Photo to Video Edit Bot at less Price \n Demo Edits to 👉 https://t.me/Mr_Super_Man_FilesBot?start=BQADAQADEwgAAqELUUfleEPZZcx5-RYE  DON'T MISS "
+
                 await client.send_message(source_chat_id, caption, reply_to=message.id)
                 print("Process Complete!")
             else:
@@ -241,15 +242,21 @@ async def handler(event):
         photo_queue = asyncio.Queue()
 
     chat = await event.get_chat()
+    
+    # Filter by Group IDs
+    if config.VIDEO_BOT_GROUPS and chat.id not in config.VIDEO_BOT_GROUPS:
+        return
+
+    # Ignore Albums
+    if event.grouped_id:
+        await event.reply("⚠️ Please send only one photo at a time.")
+        return
+
     sender = await event.get_sender()
     user_id = sender.id if sender else 0
     
     # Listen for Photos in Groups
     if event.is_group and event.photo:
-        # Filter by Group IDs
-        if config.VIDEO_BOT_GROUPS and chat.id not in config.VIDEO_BOT_GROUPS:
-            return
-
         print(f"\n[+] Photo received in group: {chat.title} (ID: {chat.id}) from User {user_id}")
         
         if not config.VIDEO_BOT_GROUPS:
@@ -300,7 +307,7 @@ if __name__ == '__main__':
     )
     
     print("\n[SUCCESS] Logged in successfully!")
-    print(f"Monitoring Group IDs: {config.SOURCE_GROUP_IDS if config.SOURCE_GROUP_IDS else 'ALL GROUPS'}")
+    print(f"Monitoring Group IDs: {config.VIDEO_BOT_GROUPS if config.VIDEO_BOT_GROUPS else 'ALL GROUPS'}")
     
     client.loop.create_task(process_queue())
     
