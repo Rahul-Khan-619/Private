@@ -32,7 +32,7 @@ SESSION_NAME = "userbot_session"
 MAIN_BOT_GROUPS = [3615852792]
 
 # Groups for video_automation.py (@Mr_Super_Editor_1roBot)
-VIDEO_BOT_GROUPS = [3344273206]
+VIDEO_BOT_GROUPS = [3615852792,3658940062]
 
 # Groups for undressher_automation.py (@UndressHer20Bot)
 UNDRESSHER_BOT_GROUPS = [3344273206]
@@ -46,5 +46,6 @@ PROMPT_BOT_GROUPS = [3615852792,3658940062]
 # Optional: Pre-fill phone number to avoid typing it every time (Format: +1234567890)
 # If empty, you will be prompted in the terminal.
 PHONE_NUMBER = "" 
+
 
 
