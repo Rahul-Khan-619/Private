@@ -39,7 +39,7 @@ except FileNotFoundError:
 PROMPTS = {
     "1": {
         "title": "Micro Bikini",
-        "prompt": "Turn all thier dresses to tiny string micro bikini with hot breast cleavage visible"
+        "prompt": "Turn all thier dresses to tiny string micro bikini with hot cleavage"
     },
     "2": {
         "title": "Shibari Bondage",
@@ -47,11 +47,11 @@ PROMPTS = {
     },
     "3": {
         "title": "Sheer Lingerie",
-        "prompt": "Turn all thier dresses to sheer transparent black lingerie with hot breast cleavage visible"
+        "prompt": "Turn all thier dresses to sheer transparent black lingerie with hot cleavage visible"
     },
     "4": {
         "title": "X-Ray Dress",
-        "prompt": "extremely transparent style dress, almost invisible sheer white fabric, entire naked body clearly visible underneath, breasts and pussy perfectly outlined"
+        "prompt": "extremely transparent style dress, almost invisible sheer white fabric, entire naked body clearly visible underneath, breasts and pussy perfectly shaped"
     },
     "5": {
         "title": "Neon Pink Bikini",
@@ -63,7 +63,7 @@ PROMPTS = {
     },
     "7": {
         "title": "Fishnet Body",
-        "prompt": "full body fishnet bodystocking"
+        "prompt": "Turn all thier dresses to full body fishnet bodystocking"
     },
     "8": {
         "title": "Wet Micro Dress",
@@ -87,6 +87,7 @@ PROMPTS = {
     },
     "13": {
         "title": "Strappy Bondage",
+        "prompt": "black bondage lingerie, thin leather straps and chains, breasts and pussy completely bare between straps"
     },
     "14": {
         "title": "Red Satin Thong",
@@ -368,6 +369,7 @@ async def main():
 
 if __name__ == '__main__':
     loop.run_until_complete(main())
+
 
 
 
