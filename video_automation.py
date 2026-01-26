@@ -67,24 +67,40 @@ async def process_queue():
                         print(f"Ignored message: {response.text[:20]}... (Waiting for Effect Menu)")
                 
                 # Select Random Effect
-                # Filter out "Preview" button
+                # Filter out "Preview" button and handle navigation
                 print("Received Effect Menu. Selecting random effect...")
-                valid_buttons = []
                 
-                if effect_msg.buttons:
-                    for row in effect_msg.buttons:
-                        for btn in row:
-                            if "Preview" not in btn.text:
-                                valid_buttons.append(btn)
-                
-                if valid_buttons:
+                while True:
+                    valid_buttons = []
+                    if effect_msg.buttons:
+                        for row in effect_msg.buttons:
+                            for btn in row:
+                                if "Preview" not in btn.text and btn.text not in ["1/2", "2/2", "Cancel", "Back"]:
+                                    valid_buttons.append(btn)
+                    
+                    if not valid_buttons:
+                        print("No valid buttons found! Retrying...")
+                        await asyncio.sleep(2)
+                        continue
+
                     selected = random.choice(valid_buttons)
                     print(f"Clicking: {selected.text}")
                     await asyncio.sleep(random.uniform(2, 4))
                     await selected.click()
-                else:
-                    print("No valid buttons found!")
-                    continue
+
+                    if selected.text in ["▶️", "◀️"]:
+                        print("Navigation clicked. Waiting for menu update...")
+                        try:
+                            # Wait for the message to be edited (pagination)
+                            event = await conv.wait_event(events.MessageEdited(chats=VIDEO_BOT_USERNAME), timeout=30)
+                            effect_msg = event.message
+                            continue
+                        except asyncio.TimeoutError:
+                            print("Timeout waiting for menu update. Re-fetching message...")
+                            effect_msg = await client.get_messages(VIDEO_BOT_USERNAME, ids=effect_msg.id)
+                            continue
+                    else:
+                        break
 
                 # Check for "No Face" Error immediately after selection
                 print("Checking for response (Confirm or Error)...")
