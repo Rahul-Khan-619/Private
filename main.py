@@ -32,121 +32,80 @@ except FileNotFoundError:
 
 async def process_photo_with_bot(bot_username, source_chat_id, message):
     """Processes a single photo with the specified bot."""
+    photo_path = None
     try:
         print(f"[{bot_username}] Processing photo from chat {source_chat_id}...")
         
         final_photo_msg = None
         
+        # 1. Download Photo
+        print(f"[{bot_username}] Downloading photo...")
+        photo_path = await client.download_media(message, file=f"temp_input_{random.randint(1000,9999)}.jpg")
+        
         async with client.conversation(bot_username, timeout=1200) as conv:
-            # 1. Download and Send Photo
-            print(f"[{bot_username}] Downloading photo...")
-            photo_path = await client.download_media(message, file=f"temp_input_{random.randint(1000,9999)}.jpg")
-            
+            # Send Photo
             print(f"[{bot_username}] Sending photo to bot...")
             await conv.send_file(photo_path)
             
-            if os.path.exists(photo_path):
-                os.remove(photo_path)
-
-            # 2. Wait for Style Menu
-            print(f"[{bot_username}] Waiting for Style Menu...")
-            style_msg = None
+            # 2. Wait for "Task submitted successfully!" or "Please Select the feature"
+            print(f"[{bot_username}] Waiting for task submission confirmation or feature selection...")
             while True:
                 response = await conv.get_response()
-                if response.buttons and ("undress type" in response.text.lower() or "select" in response.text.lower()):
-                    style_msg = response
+                if "task submitted successfully" in response.text.lower():
+                    print(f"[{bot_username}] Task submitted successfully message received.")
                     break
-                else:
-                    print(f"[{bot_username}] Ignored: {response.text[:20]}...")
-
-            # Select Random Style
-            while True:
-                print(f"[{bot_username}] Selecting random style...")
-                valid_buttons = []
-                if style_msg.buttons:
-                    for row in style_msg.buttons:
-                        for btn in row:
-                            if btn.text not in ["1/2", "2/2", "Cancel", "Back"]:
-                                valid_buttons.append(btn)
-                
-                if not valid_buttons:
-                    print(f"[{bot_username}] No valid buttons. Retrying...")
-                    await asyncio.sleep(2)
-                    continue
-
-                selected = random.choice(valid_buttons)
-                print(f"[{bot_username}] Clicking: {selected.text}")
-                await asyncio.sleep(random.uniform(2, 4))
-                await selected.click()
-
-                if selected.text in ["▶️", "◀️"]:
-                    print(f"[{bot_username}] Navigation clicked. Waiting...")
-                    try:
-                        event = await conv.wait_event(events.MessageEdited(chats=bot_username), timeout=30)
-                        style_msg = event.message
-                        continue
-                    except asyncio.TimeoutError:
-                        style_msg = await client.get_messages(bot_username, ids=style_msg.id)
-                        continue
-                else:
-                    break
-            
-            # 3. Check for Confirm or Error
-            print(f"[{bot_username}] Waiting for Confirm or Error...")
-            confirm_msg = None
-            
-            while True:
-                response = await conv.get_response()
-                
-                # Error Check
-                if "You haven't sent face photo" in response.text or "face photo has expired" in response.text:
-                    print(f"[{bot_username}] Error: No face detected.")
-                    if response.buttons:
-                        for row in response.buttons:
-                            for btn in row:
-                                if "Cancel" in btn.text:
-                                    await btn.click()
-                    await client.send_message(source_chat_id, "Error: Please send a proper full-face close-up photo.", reply_to=message.id)
-                    return # Abort
-
-                # Check for Confirm Button
-                has_confirm = False
-                if response.buttons:
+                elif "please select the feature" in response.text.lower() and response.buttons:
+                    print(f"[{bot_username}] Feature selection requested. Clicking 'Fast Image'...")
+                    # Find button containing "Fast Image"
+                    fast_image_btn = None
                     for row in response.buttons:
                         for btn in row:
-                            if "Confirm" in btn.text:
-                                has_confirm = True
+                            if "fast image" in btn.text.lower():
+                                fast_image_btn = btn
                                 break
-                
-                if has_confirm:
-                    confirm_msg = response
+                        if fast_image_btn:
+                            break
+                    
+                    if fast_image_btn:
+                        await asyncio.sleep(random.uniform(2, 4))
+                        await fast_image_btn.click()
+                        
+                        # Wait for "Send an Image" message
+                        print(f"[{bot_username}] Waiting for 'Send an Image' prompt...")
+                        while True:
+                            prompt_resp = await conv.get_response()
+                            if "send an image" in prompt_resp.text.lower() or "send a photo" in prompt_resp.text.lower():
+                                print(f"[{bot_username}] 'Send an Image' prompt received. Sending photo again...")
+                                await conv.send_file(photo_path)
+                                break
+                            else:
+                                print(f"[{bot_username}] Ignored while waiting for prompt: {prompt_resp.text[:20]}...")
+                    else:
+                        print(f"[{bot_username}] Warning: 'Fast Image' button not found.")
+                elif "haven't sent face photo" in response.text.lower() or "face photo has expired" in response.text.lower() or "no face detected" in response.text.lower():
+                    print(f"[{bot_username}] Error: No face detected.")
+                    await client.send_message(source_chat_id, "Error: Please send a proper full-face close-up photo.", reply_to=message.id)
+                    return # Abort
+                else:
+                    print(f"[{bot_username}] Ignored: {response.text[:20]}...")
+
+            # 3. Wait for Processed Photo
+            print(f"[{bot_username}] Waiting for processed photo...")
+            while True:
+                response = await conv.get_response()
+                if response.photo:
+                    final_photo_msg = response
+                    print(f"[{bot_username}] Processed photo received.")
                     break
                 else:
                     print(f"[{bot_username}] Ignored: {response.text[:20]}...")
 
-            # Click Confirm
-            print(f"[{bot_username}] Clicking Confirm...")
-            confirm_btn = None
-            for row in confirm_msg.buttons:
-                for btn in row:
-                    if "Confirm" in btn.text:
-                        confirm_btn = btn
-                        break
-            
-            if confirm_btn:
-                await asyncio.sleep(random.uniform(2, 4))
-                await confirm_btn.click()
-
-            # 4. Wait for "Task submitted" and then Final Result
-            print(f"[{bot_username}] Waiting for Final Result (upto 15m)...")
+            # 4. Wait for trailing message containing "success" (so that done can ignore this)
+            print(f"[{bot_username}] Waiting for trailing 'success' message...")
             while True:
                 response = await conv.get_response()
-                if "Task submitted successfully" in response.text:
-                    print(f"[{bot_username}] Task submitted. Waiting for photo...")
-                    continue
-                
-                if response.photo:
-                    final_photo_msg = response
+                if "success" in response.text.lower():
+                    print(f"[{bot_username}] Trailing 'success' message received and ignored.")
                     break
                 else:
                     print(f"[{bot_username}] Ignored: {response.text[:20]}...")
@@ -189,6 +148,12 @@ async def process_photo_with_bot(bot_username, source_chat_id, message):
         print(f"[{bot_username}] Error: {e}")
         import traceback
         traceback.print_exc()
+    finally:
+        if photo_path and os.path.exists(photo_path):
+            try:
+                os.remove(photo_path)
+            except Exception as e:
+                print(f"Error removing temp file {photo_path}: {e}")
 
 async def worker(bot_username):
     """Worker that consumes from queue and uses a specific bot."""

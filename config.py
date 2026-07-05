@@ -5,8 +5,8 @@ API_ID = 31349440
 API_HASH = "93811745aee1c809da395285b24ddc73"
 
 # Target Bots
-TARGET_BOT_USERNAME = "@FreeUndreBot" # For main.py (Primary)
-BACKUP_BOT_USERNAME = "@AdvancedDreamCloBot" # For main.py (Backup)
+TARGET_BOT_USERNAME = "@Fydsfjcset_bot" # For main.py (Primary)
+BACKUP_BOT_USERNAME = "@Ingbarris_bot" # For main.py (Backup)
 VIDEO_BOT_USERNAME = "@Mr_Super_Editor_1roBot" # For video_automation.py
 UNDRESSHER_BOT_USERNAME = "@UndressHer20Bot" # For undressher_automation.py
 
@@ -15,7 +15,7 @@ MASTER_BOT_USERNAME = "@fungenzbot" # Sends prompt to this bot
 RESULT_BOT_USERNAME = "@Super_Pwr_bot" # Receives result from this bot
 
 # The bot to generate links (File Store Bot)
-FILE_STORE_BOT_USERNAME = "@Mr_Super_Man_FilesBot"
+FILE_STORE_BOT_USERNAME = "@Safe_Storage_pvt_Robot"
 
 # API Bot Settings (@Super_edit_roBot)
 API_BOT_TOKEN = "8539080277:AAGcJK1H0FAjxEG2ptmEa8PCvlF2FjBf75k"
@@ -29,7 +29,7 @@ SESSION_NAME = "userbot_session"
 # Set to empty list [] to monitor ALL groups.
 
 # Groups for main.py (@FreeUndreBot & @AdvancedDreamCloBot)
-MAIN_BOT_GROUPS = [3615852792]
+MAIN_BOT_GROUPS = [4402462611]
 
 # Groups for video_automation.py (@Mr_Super_Editor_1roBot)
 VIDEO_BOT_GROUPS = [3615852792,3658940062]
@@ -46,6 +46,4 @@ PROMPT_BOT_GROUPS = [3615852792,3658940062]
 # Optional: Pre-fill phone number to avoid typing it every time (Format: +1234567890)
 # If empty, you will be prompted in the terminal.
 PHONE_NUMBER = "" 
-
-
 
