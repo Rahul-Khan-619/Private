@@ -17,6 +17,9 @@ RESULT_BOT_USERNAME = "@Super_Pwr_bot" # Receives result from this bot
 # The bot to generate links (File Store Bot)
 FILE_STORE_BOT_USERNAME = "@Safe_Storage_pvt_Robot"
 
+# Log Telegram Channel (can be ID or username, e.g., -100123456789 or "@my_log_channel")
+LOG_CHANNEL = "-1004402462611"
+
 # API Bot Settings (@Super_edit_roBot)
 API_BOT_TOKEN = "8539080277:AAGcJK1H0FAjxEG2ptmEa8PCvlF2FjBf75k"
 UNCLOTHY_API_KEY = "87e51a079a1e497187329a1f3916ce80"
