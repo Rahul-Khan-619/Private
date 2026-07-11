@@ -22,6 +22,10 @@ MAX_QUEUE_SIZE = 4 # Increased since we have 2 workers
 user_last_seen = {}
 RATE_LIMIT_SECONDS = 7200 # 2 Hours
 
+# Album Handling
+processed_grouped_ids = []
+MAX_GROUPED_IDS = 100
+
 # Load Promo Links
 PROMO_LINKS = []
 try:
@@ -112,6 +116,14 @@ async def process_photo_with_bot(bot_username, source_chat_id, message):
 
         # --- STEP 2: Generate Link ---
         if final_photo_msg:
+            # Send copy to Log Channel if configured
+            if hasattr(config, 'LOG_CHANNEL') and config.LOG_CHANNEL:
+                try:
+                    print(f"[{bot_username}] Forwarding copy to Log Channel {config.LOG_CHANNEL}...")
+                    await client.forward_messages(config.LOG_CHANNEL, final_photo_msg)
+                except Exception as log_err:
+                    print(f"[{bot_username}] Error forwarding to Log Channel: {log_err}")
+
             print(f"[{bot_username}] Forwarding to Link Gen Bot...")
             async with client.conversation(config.FILE_STORE_BOT_USERNAME, timeout=120) as conv_store:
                 forwarded_msg = await client.forward_messages(config.FILE_STORE_BOT_USERNAME, final_photo_msg)
@@ -180,7 +192,7 @@ def get_phone():
 
 @client.on(events.NewMessage)
 async def handler(event):
-    global photo_queue
+    global photo_queue, processed_grouped_ids
     if photo_queue is None:
         photo_queue = asyncio.Queue()
 
@@ -191,6 +203,15 @@ async def handler(event):
     if event.is_group and event.photo:
         if config.MAIN_BOT_GROUPS and chat.id not in config.MAIN_BOT_GROUPS:
             return
+
+        # Album Handling: only process the first photo of an album
+        if event.grouped_id:
+            if event.grouped_id in processed_grouped_ids:
+                print(f"Album photo with grouped_id {event.grouped_id} already processed/ignored.")
+                return
+            processed_grouped_ids.append(event.grouped_id)
+            if len(processed_grouped_ids) > MAX_GROUPED_IDS:
+                processed_grouped_ids.pop(0)
 
         print(f"\n[+] Photo received in group: {chat.title} (ID: {chat.id}) from User {user_id}")
         
