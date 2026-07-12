@@ -6,7 +6,7 @@ API_HASH = "93811745aee1c809da395285b24ddc73"
 
 # Target Bots
 TARGET_BOT_USERNAME = "@IRNoodSaz_02Bot" # For main.py (Primary)
-BACKUP_BOT_USERNAME = "@EasyAI60_Bot" # For main.py (Backup)
+BACKUP_BOT_USERNAME = "@EasyAI62_Bot" # For main.py (Backup)
 VIDEO_BOT_USERNAME = "@Mr_Super_Editor_1roBot" # For video_automation.py
 UNDRESSHER_BOT_USERNAME = "@UndressHer20Bot" # For undressher_automation.py
 
@@ -18,7 +18,7 @@ RESULT_BOT_USERNAME = "@Super_Pwr_bot" # Receives result from this bot
 FILE_STORE_BOT_USERNAME = "@Safe_Storage_pvt_Robot"
 
 # Log Telegram Channel (can be ID or username, e.g., -100123456789 or "@my_log_channel")
-LOG_CHANNEL = "-1004402462611"
+LOG_CHANNEL = "4402462611"
 
 # API Bot Settings (@Super_edit_roBot)
 API_BOT_TOKEN = "8539080277:AAGcJK1H0FAjxEG2ptmEa8PCvlF2FjBf75k"
