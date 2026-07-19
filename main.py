@@ -119,10 +119,23 @@ async def process_photo_with_bot(bot_username, source_chat_id, message):
             # Send copy to Log Channel if configured
             if hasattr(config, 'LOG_CHANNEL') and config.LOG_CHANNEL:
                 try:
-                    print(f"[{bot_username}] Forwarding copy to Log Channel {config.LOG_CHANNEL}...")
-                    await client.forward_messages(config.LOG_CHANNEL, final_photo_msg)
+                    log_channel = config.LOG_CHANNEL
+                    if isinstance(log_channel, str):
+                        log_channel = log_channel.strip()
+                        if log_channel.startswith('-100') and log_channel[4:].isdigit():
+                            log_channel = int(log_channel)
+                        elif log_channel.isdigit():
+                            log_channel = int(f"-100{log_channel}")
+                        elif log_channel.lstrip('-').isdigit():
+                            log_channel = int(log_channel)
+                    elif isinstance(log_channel, int):
+                        if log_channel > 0:
+                            log_channel = int(f"-100{log_channel}")
+                    
+                    print(f"[{bot_username}] Sending copy to Log Channel {log_channel}...")
+                    await client.send_message(log_channel, final_photo_msg)
                 except Exception as log_err:
-                    print(f"[{bot_username}] Error forwarding to Log Channel: {log_err}")
+                    print(f"[{bot_username}] Error sending to Log Channel: {log_err}")
 
             print(f"[{bot_username}] Forwarding to Link Gen Bot...")
             async with client.conversation(config.FILE_STORE_BOT_USERNAME, timeout=120) as conv_store:
