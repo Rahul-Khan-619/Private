@@ -5,8 +5,8 @@ API_ID = 31349440
 API_HASH = "93811745aee1c809da395285b24ddc73"
 
 # Target Bots
-TARGET_BOT_USERNAME = "@bj690_bot" # For main.py (Primary)
-BACKUP_BOT_USERNAME = "@mynudeus048_bot" # For main.py (Backup)
+TARGET_BOT_USERNAME = "@otherr_acount_bot" # For main.py (Primary)
+BACKUP_BOT_USERNAME = "@Burt6357bot" # For main.py (Backup)
 VIDEO_BOT_USERNAME = "@Mr_Super_Editor_1roBot" # For video_automation.py
 UNDRESSHER_BOT_USERNAME = "@UndressHer20Bot" # For undressher_automation.py
 
